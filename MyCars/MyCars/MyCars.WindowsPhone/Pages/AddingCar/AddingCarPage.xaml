@@ -112,6 +112,12 @@
                          Style="{StaticResource SmallTextBoxStyle}"
                          Text="{Binding Car.CityLocation, Mode=TwoWay}"
                          Margin="7 0 0 7" />
+                <ProgressRing Grid.Row="4"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="4"
+                              IsActive="{Binding Initializing}" 
+                              Height="90" 
+                              Width="90" />
                 <TextBlock Name="ErrorMessageTextBlock"
                            Text="{Binding ErrorMessage, Mode=TwoWay}"
                            TextWrapping="Wrap"
@@ -146,6 +152,7 @@
                     Grid.Row="2"
                     HorizontalAlignment="Center">
             <AppBarButton Label="Cars" Icon="List" Click="OnMainPageAppBarButtonClick"/>
+            <AppBarButton Label="Search" Icon="Find" Click="OnSearchPageAppBarButtonClick" />
             <AppBarButton Label="Add" Icon="Add" />
         </StackPanel>
     </Grid>

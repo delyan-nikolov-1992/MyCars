@@ -1,33 +1,24 @@
-﻿namespace MyCars.Pages.Main
+﻿namespace MyCars.SearchResult
 {
     using GalaSoft.MvvmLight;
-    using MyCars.Models;
     using MyCars.ViewModels;
-    using Parse;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
 
-    public class MainPageViewModel : ViewModelBase
+    public class SearchResultPageViewModel : ViewModelBase
     {
         private ObservableCollection<CarViewModel> cars;
         private bool initializing;
 
-        public MainPageViewModel()
+        public SearchResultPageViewModel()
         {
-            this.LoadCars();
         }
 
-        private async void LoadCars()
+        public void LoadCars(IEnumerable<CarViewModel> cars)
         {
             this.Initializing = true;
 
-            var cars = await new ParseQuery<Car>()
-                    .OrderBy(c => c.Price)
-                    .FindAsync();
-
-            this.Cars = cars.AsQueryable()
-                    .Select(CarViewModel.FromModel);
+            this.Cars = cars;
 
             this.Initializing = false;
         }
@@ -38,6 +29,7 @@
             {
                 return this.initializing;
             }
+
             set
             {
                 this.initializing = value;

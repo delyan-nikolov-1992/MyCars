@@ -12,6 +12,7 @@
         private CarViewModel car;
         private ObservableCollection<int> allowedYears;
         private string errorMessage;
+        private bool initializing;
 
         public AddingCarPageViewModel()
         {
@@ -34,6 +35,19 @@
             {
                 this.car = value;
                 this.RaisePropertyChanged(() => this.Car);
+            }
+        }
+
+        public bool Initializing
+        {
+            get
+            {
+                return this.initializing;
+            }
+            set
+            {
+                this.initializing = value;
+                this.RaisePropertyChanged(() => this.Initializing);
             }
         }
 
@@ -77,14 +91,20 @@
 
         public async Task<bool> AddCar()
         {
+            this.Initializing = true;
+
             if (!IsDataValid())
             {
+                this.Initializing = false;
+
                 return false;
             }
 
             var carModel = this.Car.ToModel;
 
             await carModel.SaveAsync();
+
+            this.Initializing = false;
 
             return true;
         }

@@ -4,6 +4,7 @@ namespace MyCars.Pages.AddingCar
     using MyCars.Common;
     using MyCars.Pages.Login;
     using MyCars.Pages.Main;
+    using MyCars.Pages.Search;
     using System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -123,11 +124,6 @@ namespace MyCars.Pages.AddingCar
             this.Frame.Navigate(typeof(LoginPage));
         }
 
-        private void OnMainPageAppBarButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MainPage));
-        }
-
         private async void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
             if (this.ViewModel == null)
@@ -142,6 +138,16 @@ namespace MyCars.Pages.AddingCar
             {
                 this.Frame.Navigate(typeof(MainPage));
             }
+        }
+
+        private void OnMainPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void OnSearchPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SearchPage));
         }
     }
 }

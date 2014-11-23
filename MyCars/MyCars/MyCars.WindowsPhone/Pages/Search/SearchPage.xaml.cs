@@ -1,11 +1,11 @@
 ﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
-namespace MyCars.Pages.Main
+namespace MyCars.Pages.Search
 {
     using MyCars.Common;
     using MyCars.Pages.AddingCar;
-    using MyCars.Pages.CarDetails;
     using MyCars.Pages.Login;
-    using MyCars.Pages.Search;
+    using MyCars.Pages.Main;
+    using MyCars.SearchResult;
     using System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -14,17 +14,17 @@ namespace MyCars.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class SearchPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public MainPage()
-            : this(new MainPageViewModel())
+        public SearchPage()
+            : this(new SearchPageViewModel())
         {
         }
 
-        public MainPage(MainPageViewModel viewModel)
+        public SearchPage(SearchPageViewModel viewModel)
         {
             this.InitializeComponent();
 
@@ -35,11 +35,11 @@ namespace MyCars.Pages.Main
             this.ViewModel = viewModel;
         }
 
-        public MainPageViewModel ViewModel
+        public SearchPageViewModel ViewModel
         {
             get
             {
-                return this.DataContext as MainPageViewModel;
+                return this.DataContext as SearchPageViewModel;
             }
 
             set
@@ -124,11 +124,9 @@ namespace MyCars.Pages.Main
             this.Frame.Navigate(typeof(LoginPage));
         }
 
-        private void OnCarsListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnMainPageAppBarButtonClick(object sender, RoutedEventArgs e)
         {
-            var eventsListView = (sender as ListView);
-            var selectedObject = eventsListView.SelectedItem;
-            this.Frame.Navigate(typeof(CarDetailsPage), selectedObject);
+            this.Frame.Navigate(typeof(MainPage));
         }
 
         private void OnAddingCarPageAppBarButtonClick(object sender, RoutedEventArgs e)
@@ -136,9 +134,20 @@ namespace MyCars.Pages.Main
             this.Frame.Navigate(typeof(AddingCarPage));
         }
 
-        private void OnSearchPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        private async void OnSearchButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(SearchPage));
+            if (this.ViewModel == null)
+            {
+                // raise error
+                return;
+            }
+
+            var searchedSuccessful = await this.ViewModel.SearchCar();
+
+            if (searchedSuccessful != null)
+            {
+                this.Frame.Navigate(typeof(SearchResultPage), searchedSuccessful);
+            }
         }
     }
 }

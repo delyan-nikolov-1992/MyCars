@@ -1,12 +1,16 @@
 ﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
-namespace MyCars.Pages.Main
+namespace MyCars.SearchResult
 {
     using MyCars.Common;
+    using MyCars.Models;
     using MyCars.Pages.AddingCar;
     using MyCars.Pages.CarDetails;
     using MyCars.Pages.Login;
     using MyCars.Pages.Search;
+    using MyCars.ViewModels;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
@@ -14,17 +18,18 @@ namespace MyCars.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class SearchResultPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public MainPage()
-            : this(new MainPageViewModel())
+        public SearchResultPage()
+            : this(new SearchResultPageViewModel())
         {
         }
 
-        public MainPage(MainPageViewModel viewModel)
+
+        public SearchResultPage(SearchResultPageViewModel viewModel)
         {
             this.InitializeComponent();
 
@@ -35,11 +40,11 @@ namespace MyCars.Pages.Main
             this.ViewModel = viewModel;
         }
 
-        public MainPageViewModel ViewModel
+        public SearchResultPageViewModel ViewModel
         {
             get
             {
-                return this.DataContext as MainPageViewModel;
+                return this.DataContext as SearchResultPageViewModel;
             }
 
             set
@@ -110,6 +115,10 @@ namespace MyCars.Pages.Main
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            var cars = e.Parameter as IEnumerable<CarViewModel>;
+
+            this.ViewModel.LoadCars(cars);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
