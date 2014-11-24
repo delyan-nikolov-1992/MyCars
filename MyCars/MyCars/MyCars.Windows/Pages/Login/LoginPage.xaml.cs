@@ -1,23 +1,16 @@
-﻿using MyCars.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
-
+﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 namespace MyCars.Pages.Login
 {
+    using MyCars.Common;
+    using MyCars.InternetAccess;
+    using MyCars.Pages.Main;
+    using MyCars.Pages.Register;
+    using System;
+    using Windows.UI.Popups;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Navigation;
+
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
@@ -26,6 +19,11 @@ namespace MyCars.Pages.Login
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        public LoginPage()
+            : this(new LoginPageViewModel())
+        {
+        }
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -45,12 +43,27 @@ namespace MyCars.Pages.Login
         }
 
 
-        public LoginPage()
+        public LoginPage(LoginPageViewModel viewModel)
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
+
+            this.ViewModel = viewModel;
+        }
+
+        public LoginPageViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as LoginPageViewModel;
+            }
+
+            set
+            {
+                this.DataContext = value;
+            }
         }
 
         /// <summary>
@@ -102,5 +115,41 @@ namespace MyCars.Pages.Login
         }
 
         #endregion
+
+        private async void CheckConnection()
+        {
+            if (!Connection.IsConnectedToInternet())
+            {
+                MessageDialog msgbox = new MessageDialog("No internet access!");
+
+                await msgbox.ShowAsync();
+            }
+        }
+
+        private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (this.ViewModel == null)
+            {
+                // raise error
+                return;
+            }
+
+            var isLoggedIn = await this.ViewModel.Login();
+
+            if (isLoggedIn)
+            {
+                this.ErrorMessageTextBlock.Visibility = Visibility.Collapsed;
+                this.Frame.Navigate(typeof(MainPage));
+            }
+            else
+            {
+                this.ErrorMessageTextBlock.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void OnRegisterButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(RegisterPage));
+        }
     }
 }

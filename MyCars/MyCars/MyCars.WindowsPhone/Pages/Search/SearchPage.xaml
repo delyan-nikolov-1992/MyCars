@@ -124,6 +124,7 @@
             <AppBarButton Label="Cars" Icon="List" Click="OnMainPageAppBarButtonClick" />
             <AppBarButton Label="Search" Icon="Find" />
             <AppBarButton Label="Add" Icon="Add" Click="OnAddingCarPageAppBarButtonClick" />
+            <AppBarButton Label="Favourites" Icon="Favorite" Click="OnFavouritesPageAppBarButtonClick" />
         </StackPanel>
     </Grid>
 </Page>

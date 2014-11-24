@@ -10,11 +10,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
-    </Page.Resources>
-
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -35,16 +30,79 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="74*"/>
+                <ColumnDefinition Width="89*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Button x:Name="backButton" Margin="39,59,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
                         VerticalAlignment="Top"
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Grid.ColumnSpan="2"/>
+            <!-- Title Panel -->
+            <TextBlock Grid.Column="3" 
+                       Text="Login page" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="60"/>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Username:" 
+                       Style="{StaticResource BigLabelTextBlockStyle}"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2" />
+            <TextBox Text="{Binding User.Username, Mode=TwoWay}"
+                     Grid.Row="1"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="2"
+                     FontSize="60"
+                     VerticalAlignment="Center"/>
+            <TextBlock Text="Password:" 
+                       Style="{StaticResource BigLabelTextBlockStyle}"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"  />
+            <PasswordBox Password="{Binding User.Password, Mode=TwoWay}"
+                         Grid.Row="3"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         FontSize="60"
+                         VerticalAlignment="Center"  />
+            <TextBlock Name="ErrorMessageTextBlock"
+                       Text="Invalid username or password!"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource ErrorMessageBlockStyleBig}"
+                       Grid.Row="4"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Visibility="Collapsed" />
+            <Button Content="Login"  
+                    Grid.Row="5"
+                    Grid.Column="0" 
+                    Style="{StaticResource BigButtonStyle}"
+                    Click="OnLoginButtonClick" />
+            <Button Content="Register"  
+                    Grid.Row="5"
+                    Grid.Column="1" 
+                    Style="{StaticResource BigButtonStyle}"
+                    Click="OnRegisterButtonClick" />
         </Grid>
     </Grid>
 </Page>

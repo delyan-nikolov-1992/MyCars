@@ -2,8 +2,10 @@
 namespace MyCars.Pages.Register
 {
     using MyCars.Common;
+    using MyCars.InternetAccess;
     using MyCars.Pages.Main;
     using System;
+    using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
@@ -107,6 +109,8 @@ namespace MyCars.Pages.Register
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            this.CheckConnection();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -115,6 +119,16 @@ namespace MyCars.Pages.Register
         }
 
         #endregion
+
+        private async void CheckConnection()
+        {
+            if (!Connection.IsConnectedToInternet())
+            {
+                MessageDialog msgbox = new MessageDialog("No internet access!");
+
+                await msgbox.ShowAsync();
+            }
+        }
 
         private async void OnRegisterButtonClick(object sender, RoutedEventArgs e)
         {

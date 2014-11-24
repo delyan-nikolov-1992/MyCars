@@ -1,21 +1,32 @@
 ﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 namespace MyCars.Pages.Main
 {
-    using System;
-
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Navigation;
-
     using MyCars.Common;
+    using MyCars.InternetAccess;
+    using MyCars.Pages.AddingCar;
+    using MyCars.Pages.CarDetails;
+    using MyCars.Pages.Favourites;
+    using MyCars.Pages.Login;
+    using MyCars.Pages.Search;
+    using System;
+    using Windows.UI.Popups;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
+    using Windows.UI.Xaml.Navigation;
 
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        public MainPage()
+            : this(new MainPageViewModel())
+        {
+        }
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -35,12 +46,27 @@ namespace MyCars.Pages.Main
         }
 
 
-        public MainPage()
+        public MainPage(MainPageViewModel viewModel)
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
+
+            this.ViewModel = viewModel;
+        }
+
+        public MainPageViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as MainPageViewModel;
+            }
+
+            set
+            {
+                this.DataContext = value;
+            }
         }
 
         /// <summary>
@@ -84,6 +110,8 @@ namespace MyCars.Pages.Main
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+
+            this.CheckConnection();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -92,5 +120,48 @@ namespace MyCars.Pages.Main
         }
 
         #endregion
+
+        public void OnSignOutCompleted(object sender, EventArgs args)
+        {
+            this.Frame.Navigate(typeof(LoginPage));
+        }
+
+        private async void CheckConnection()
+        {
+            if (!Connection.IsConnectedToInternet())
+            {
+                MessageDialog msgbox = new MessageDialog("No internet access!");
+
+                await msgbox.ShowAsync();
+            }
+        }
+
+        private void OnCarsListItemDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            var eventsListView = (sender as ListView);
+
+            if (eventsListView == null)
+            {
+                return;
+            }
+
+            var selectedObject = eventsListView.SelectedItem;
+            this.Frame.Navigate(typeof(CarDetailsPage), selectedObject);
+        }
+
+        private void OnAddingCarPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(AddingCarPage));
+        }
+
+        private void OnSearchPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SearchPage));
+        }
+
+        private void OnFavouritesPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavouritesPage));
+        }
     }
 }

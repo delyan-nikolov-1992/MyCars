@@ -1,0 +1,121 @@
+﻿<UserControl
+    x:Class="MyCars.Views.CarDetailsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyCars.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                  HorizontalScrollBarVisibility="Disabled" >
+        <Grid  DataContext="{Binding Car}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource TitleTextBlockStyleBig}"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Width="Auto"
+                       Text="{Binding Vendor}"
+                       HorizontalAlignment="Right" />
+            <TextBlock Style="{StaticResource TitleTextBlockStyleBig}"
+                       Grid.Row="0"
+                       Grid.Column="2"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding Model}"
+                       Margin="7 0 0 0" />
+            <TextBlock Style="{StaticResource TitleTextBlockStyleBig}"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Width="Auto"
+                       Text="Year:"
+                       HorizontalAlignment="Right" />
+            <TextBlock Style="{StaticResource TitleTextBlockStyleBig}"
+                       Grid.Row="1"
+                       Grid.Column="2"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding YearOfManufacture}"
+                       Margin="7 0 0 0" />
+            <Image Source="{Binding Bitmap}"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="4"
+                   Margin="10"/>
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="4" 
+                       TextWrapping="Wrap"
+                       Text="{Binding Description}"
+                       FontSize="45"
+                       Margin="7 3 0 0" />
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="By:"
+                       FontSize="45"
+                       HorizontalAlignment="Right"
+                       Margin="0 3 0 0"/>
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
+                       Text="{Binding OwnerUsername}"
+                       FontSize="45"
+                       Margin="7 0 0 0"
+                       FontStyle="Italic"
+                       Foreground="DarkCyan"/>
+            <TextBlock Grid.Row="4"
+                       Grid.Column="2"
+                       Text="GSM:"
+                       FontSize="45"
+                       HorizontalAlignment="Right"
+                       Margin="0 3 0 0"/>
+            <TextBlock Grid.Row="4"
+                       Grid.Column="3"
+                       Text="{Binding OwnerPhone}"
+                       FontSize="45"
+                       Margin="7 0 0 0"
+                       FontStyle="Italic"
+                       Foreground="DarkCyan"/>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="0"
+                       Text="Price:"
+                       FontSize="45"
+                       HorizontalAlignment="Right"
+                       Margin="0 3 0 0"/>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="1"
+                       Text="{Binding Price}"
+                       FontSize="45"
+                       Margin="7 0 0 0"
+                       FontStyle="Italic"
+                       Foreground="DarkCyan" />
+            <TextBlock Grid.Row="5"
+                       Grid.Column="2"
+                       Text="City:"
+                       FontSize="45"
+                       HorizontalAlignment="Right"
+                       Margin="0 3 0 0"/>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="3"
+                       Text="{Binding CityLocation}"
+                       FontSize="45"
+                       Margin="7 0 0 0"
+                       FontStyle="Italic"
+                       Foreground="DarkCyan" />
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,114 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="MyCars.Pages.Register.RegisterPage"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyCars.Pages.Register"
+    xmlns:common="using:MyCars.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back button and page title -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="74*"/>
+                <ColumnDefinition Width="89*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="backButton" Margin="39,59,0,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Back"
+                        AutomationProperties.AutomationId="BackButton"
+                        AutomationProperties.ItemType="Navigation Button"/>
+            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Grid.ColumnSpan="2"/>
+            <!-- Title Panel -->
+            <TextBlock Grid.Column="3" 
+                       Text="Register" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="60"/>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Username:*" 
+                       Style="{StaticResource LabelTextRegisterBlockStyleBig}"
+                       Grid.Row="0"
+                       Grid.Column="0" />
+            <TextBox Text="{Binding User.Username, Mode=TwoWay}"
+                     Style="{StaticResource TextBoxRegisterBlockStyle}"
+                     Grid.Row="0"
+                     Grid.Column="1" 
+                     VerticalAlignment="Center" />
+            <TextBlock Text="Password:*" 
+                       Style="{StaticResource LabelTextRegisterBlockStyleBig}" 
+                       Grid.Row="1"
+                       Grid.Column="0"  />
+            <PasswordBox Password="{Binding User.Password, Mode=TwoWay}"
+                     Style="{StaticResource PasswordBoxRegisterBlockStyle}"
+                         Grid.Row="1"
+                         Grid.Column="1"  />
+            <TextBlock Text="Confirm password:*" 
+                       Style="{StaticResource LabelTextRegisterBlockStyleBig}" 
+                       Grid.Row="2"
+                       Grid.Column="0"  />
+            <PasswordBox Password="{Binding ConfirmationPassword, Mode=TwoWay}"
+                     Style="{StaticResource PasswordBoxRegisterBlockStyle}"
+                         Grid.Row="2"
+                         Grid.Column="1"  />
+            <TextBlock Text="Contact phone:" 
+                       Style="{StaticResource LabelTextRegisterBlockStyleBig}"
+                       Grid.Row="3"
+                       Grid.Column="0" />
+            <TextBox Text="{Binding User.Phone, Mode=TwoWay}"
+                     Style="{StaticResource TextBoxRegisterBlockStyle}"
+                     Grid.Row="3"
+                     Grid.Column="1"  />
+            <ProgressRing Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          IsActive="{Binding Initializing}" 
+                          Height="90" Width="90" />
+            <TextBlock Name="ErrorMessageTextBlock"
+                       Text="{Binding ErrorMessage, Mode=TwoWay}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource ErrorMessageBlockStyleBig}"
+                       Grid.Row="4"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"/>
+            <Button Content="Register"
+                    Style="{StaticResource ButtonBlockStyleBig}"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Click="OnRegisterButtonClick" />
+        </Grid>
+    </Grid>
+</Page>

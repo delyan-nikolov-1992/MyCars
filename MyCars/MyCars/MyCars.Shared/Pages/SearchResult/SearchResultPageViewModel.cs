@@ -1,4 +1,4 @@
-﻿namespace MyCars.SearchResult
+﻿namespace MyCars.Pages.SearchResult
 {
     using GalaSoft.MvvmLight;
     using MyCars.ViewModels;

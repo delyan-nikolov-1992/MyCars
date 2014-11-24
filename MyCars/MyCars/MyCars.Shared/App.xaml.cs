@@ -16,6 +16,14 @@ namespace MyCars
     using MyCars.Pages.Login;
     using MyCars.Models;
     using System.Collections.Generic;
+    using MyCars.Models.ParseModels;
+    using Windows.UI.Popups;
+    using System.Net.NetworkInformation;
+    using Windows.Networking.Connectivity;
+
+#if WINDOWS_PHONE_APP
+    using Windows.Devices.Sensors;
+#endif
 
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -35,41 +43,28 @@ namespace MyCars
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
 
-            InitParse();
+#if WINDOWS_PHONE_APP
+            this.ShakeEvent();
+#endif
+
+            this.InitParse();
         }
 
-        static Random rand = new Random();
+#if WINDOWS_PHONE_APP
+        private void ShakeEvent()
+        {
+            Accelerometer.GetDefault().Shaken += (snd, args) =>
+            {
+                App.Current.Exit();
+            };
+        }
+#endif
 
         private void InitParse()
         {
-            ParseObject.RegisterSubclass<Car>();
+            ParseObject.RegisterSubclass<CarParseModel>();
 
             ParseClient.Initialize("UOAoU1Pv6LnxeWmn7HmZgzHq1EgeRDHnc8aupzMJ", "HD9PrSEvMfAlZwZadGxIEmiRVZLT0O6C4a4l0VIF");
-
-            //int count = 15;
-            //this.CreateTestCars(count);
-        }
-
-        private async void CreateTestCars(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                var title = string.Format("Car #{0}", i + 1);
-
-                var car = new Car()
-                {
-                    Vendor = title + " vendor",
-                    Model = title + " model",
-                    Description = title + " description",
-                    OwnerUsername = ParseUser.CurrentUser.Username,
-                    OwnerPhone = ParseUser.CurrentUser["phone"].ToString(),
-                    YearOfManufacture = 1980 + i,
-                    CityLocation = title + " city",
-                    Price = 1500 * i
-                };
-
-                await car.SaveAsync();
-            }
         }
 
         /// <summary>

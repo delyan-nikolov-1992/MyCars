@@ -10,6 +10,8 @@ namespace MyCars.Pages.Login
     using MyCars.Pages.Main;
     using Parse;
     using MyCars.Pages.Register;
+    using MyCars.InternetAccess;
+    using Windows.UI.Popups;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -110,6 +112,8 @@ namespace MyCars.Pages.Login
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            this.CheckConnection();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -118,6 +122,16 @@ namespace MyCars.Pages.Login
         }
 
         #endregion
+
+        private async void CheckConnection()
+        {
+            if (!Connection.IsConnectedToInternet())
+            {
+                MessageDialog msgbox = new MessageDialog("No internet access!");
+
+                await msgbox.ShowAsync();
+            }
+        }
 
         private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
         {

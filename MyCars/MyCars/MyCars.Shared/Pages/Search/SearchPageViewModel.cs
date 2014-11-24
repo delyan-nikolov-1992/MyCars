@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Linq;
     using MyCars.ViewModels;
+    using MyCars.Models.ParseModels;
 
     public class SearchPageViewModel : ViewModelBase
     {
@@ -162,7 +163,7 @@
                 return null;
             }
 
-            var cars = await new ParseQuery<Car>()
+            var cars = await new ParseQuery<CarParseModel>()
                     .OrderBy(c => c.Price)
                     .Where(c => (this.MinPrice <= c.Price) && (c.Price <= this.MaxPrice) &&
                         (this.MinYear <= c.YearOfManufacture))
@@ -170,7 +171,7 @@
 
             var resultCars = cars.AsQueryable()
                 .Where(c => (c.Vendor.Contains(this.Model) || c.Model.Contains(this.Model)) &&
-                (c.CityLocation.Contains(this.City))).Select(CarViewModel.FromModel).ToList();
+                (c.CityLocation.Contains(this.City))).Select(CarViewModel.FromParseModel).ToList();
 
             if (!resultCars.Any())
             {

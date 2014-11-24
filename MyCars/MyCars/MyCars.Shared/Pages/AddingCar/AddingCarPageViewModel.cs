@@ -100,7 +100,7 @@
                 return false;
             }
 
-            var carModel = this.Car.ToModel;
+            var carModel = this.Car.ToParseModel;
 
             await carModel.SaveAsync();
 

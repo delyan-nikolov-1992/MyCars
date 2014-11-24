@@ -1,9 +1,9 @@
-﻿namespace MyCars.Models
+﻿namespace MyCars.Models.ParseModels
 {
     using Parse;
 
     [ParseClassName("Car")]
-    public class Car : ParseObject
+    public class CarParseModel : ParseObject
     {
         [ParseFieldName("vendor")]
         public string Vendor

@@ -1,19 +1,21 @@
-﻿namespace MyCars.Pages.Main
+﻿namespace MyCars.Pages.Favourites
 {
     using GalaSoft.MvvmLight;
-    using MyCars.Models;
+    using MyCars.Models.ParseModels;
+    using MyCars.SQLiteHelper;
     using MyCars.ViewModels;
     using Parse;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
 
-    public class MainPageViewModel : ViewModelBase
+    public class FavouritesPageViewModel : ViewModelBase
     {
         private ObservableCollection<CarViewModel> cars;
         private bool initializing;
 
-        public MainPageViewModel()
+        public FavouritesPageViewModel()
         {
             this.LoadCars();
         }
@@ -22,12 +24,12 @@
         {
             this.Initializing = true;
 
-            var cars = await new ParseQuery<Car>()
-                    .OrderBy(c => c.Price)
-                    .FindAsync();
+            SQLiteManager manager = new SQLiteManager();
+
+            var cars = await manager.SearchCarsAsync();
 
             this.Cars = cars.AsQueryable()
-                    .Select(CarViewModel.FromModel);
+                    .Select(CarViewModel.FromSQLiteModel);
 
             this.Initializing = false;
         }
@@ -70,6 +72,12 @@
                     this.cars.Add(currentCar);
                 }
             }
+        }
+
+        public async Task DeleteCar(CarViewModel selectedObject)
+        {
+            SQLiteManager manager = new SQLiteManager();
+            await manager.DeleteCarAsync(selectedObject.ObjectId);
         }
     }
 }

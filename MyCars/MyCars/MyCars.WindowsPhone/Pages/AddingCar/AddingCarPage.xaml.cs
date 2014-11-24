@@ -2,10 +2,14 @@
 namespace MyCars.Pages.AddingCar
 {
     using MyCars.Common;
+    using MyCars.Pages.Favourites;
     using MyCars.Pages.Login;
     using MyCars.Pages.Main;
     using MyCars.Pages.Search;
     using System;
+    using Windows.Devices.Geolocation;
+    using Windows.Services.Maps;
+    using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
@@ -46,7 +50,6 @@ namespace MyCars.Pages.AddingCar
                 this.DataContext = value;
             }
         }
-
 
         /// <summary>
         /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
@@ -110,6 +113,7 @@ namespace MyCars.Pages.AddingCar
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            LoadLocation();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -148,6 +152,53 @@ namespace MyCars.Pages.AddingCar
         private void OnSearchPageAppBarButtonClick(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SearchPage));
+        }
+
+        private void OnFavouritesPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavouritesPage));
+        }
+
+        private async void LoadLocation()
+        {
+            Geolocator locator = new Geolocator();
+            locator.DesiredAccuracy = PositionAccuracy.High;
+            locator.MovementThreshold = 100;
+            locator.ReportInterval = 100;
+
+            locator.PositionChanged += (snd, args) =>
+            {
+                this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var latitude = args.Position.Coordinate.Point.Position.Latitude;
+                    var longitude = args.Position.Coordinate.Point.Position.Longitude;
+
+                    ReverseGeocode(latitude, longitude);
+                });
+            };
+
+            await locator.GetGeopositionAsync();
+        }
+
+        private async void ReverseGeocode(double latitude, double longitude)
+        {
+            // Location to reverse geocode.
+            BasicGeoposition location = new BasicGeoposition();
+            location.Latitude = latitude;
+            location.Longitude = longitude;
+            Geopoint pointToReverseGeocode = new Geopoint(location);
+
+            // Reverse geocode the specified geographic location.
+            MapLocationFinderResult result =
+                await MapLocationFinder.FindLocationsAtAsync(pointToReverseGeocode);
+
+            // If the query returns results, display the name of the town
+            // contained in the address of the first result.
+            if (result.Status == MapLocationFinderStatus.Success && result.Locations.Count > 0)
+            {
+                var city = result.Locations[0].Address.Town;
+                this.CityLocation.Text = city;
+            }
         }
     }
 }

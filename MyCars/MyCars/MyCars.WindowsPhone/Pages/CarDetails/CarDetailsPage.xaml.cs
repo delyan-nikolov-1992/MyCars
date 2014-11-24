@@ -5,6 +5,8 @@ namespace MyCars.Pages.CarDetails
     using MyCars.Pages.Login;
     using MyCars.ViewModels;
     using System;
+    using Windows.UI.Popups;
+    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
 
@@ -17,7 +19,7 @@ namespace MyCars.Pages.CarDetails
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
         public CarDetailsPage()
-            :this(new CarDetailsPageViewModel())
+            : this(new CarDetailsPageViewModel())
         {
         }
 
@@ -120,6 +122,27 @@ namespace MyCars.Pages.CarDetails
         public void OnSignOutCompleted(object sender, EventArgs args)
         {
             this.Frame.Navigate(typeof(LoginPage));
+        }
+
+        private async void OnAddToFavouritesClick(object sender, RoutedEventArgs e)
+        {
+            if (this.ViewModel == null)
+            {
+                // raise error
+                return;
+            }
+
+            bool result = await this.ViewModel.AddToFavourites();
+            string message = "New car added to favourites!";
+
+            if (result)
+            {
+                message = "The car is already added to Favourites!";
+            }
+
+            MessageDialog msgbox = new MessageDialog(message);
+
+            await msgbox.ShowAsync();
         }
     }
 }

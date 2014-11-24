@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Title Panel -->
@@ -30,5 +31,11 @@
 
         <!--TODO: Content should be placed within the following grid-->
         <views:CarDetailsView Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0" />
+        
+        <Button Grid.Row="2"
+                Content="Add to Favourites"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Click="OnAddToFavouritesClick" />
     </Grid>
 </Page>

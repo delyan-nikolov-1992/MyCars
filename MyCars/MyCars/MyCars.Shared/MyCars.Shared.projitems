@@ -19,27 +19,24 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Car.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InternetAccess\Connection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ParseModels\CarParseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SQLiteModels\CarSQLiteModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\AddingCar\AddingCarPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\CarDetails\CarDetailsPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Favourites\FavouritesPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Login\LoginPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Main\MainPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Register\RegisterPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\SearchResult\SearchResultPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Search\SearchPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLiteHelper\SQLite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLiteHelper\SQLiteAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLiteHelper\SQLiteManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CarViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UserViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\CarDetailsView.xaml.cs">
-      <DependentUpon>CarDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\HeaderView.xaml.cs">
-      <DependentUpon>HeaderView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Views\CarDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\HeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Images\car.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Images\NoImage.jpg" />
   </ItemGroup>
 </Project>

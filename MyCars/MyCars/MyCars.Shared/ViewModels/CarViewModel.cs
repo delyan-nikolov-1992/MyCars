@@ -2,6 +2,8 @@
 {
     using GalaSoft.MvvmLight;
     using MyCars.Models;
+    using MyCars.Models.ParseModels;
+    using MyCars.Models.SQLiteModels;
     using Parse;
     using System;
     using System.Collections.Generic;
@@ -12,6 +14,7 @@
 
     public class CarViewModel : ViewModelBase
     {
+        private string objectId;
         private string vendor;
         private string model;
         private double price;
@@ -24,12 +27,13 @@
         private string ownerUsername;
         private string ownerPhone;
 
-        public static Expression<Func<Car, CarViewModel>> FromModel
+        public static Expression<Func<CarParseModel, CarViewModel>> FromParseModel
         {
             get
             {
                 return model => new CarViewModel()
                 {
+                    ObjectId = model.ObjectId,
                     Vendor = model.Vendor,
                     Model = model.Model,
                     Description = model.Description,
@@ -45,12 +49,54 @@
             }
         }
 
-        public Car ToModel
+        public CarParseModel ToParseModel
         {
             get
             {
-                return new Car()
+                return new CarParseModel()
                 {
+                    Vendor = this.Vendor,
+                    Model = this.Model,
+                    Description = this.Description,
+                    OwnerUsername = ParseUser.CurrentUser.Username,
+                    OwnerPhone = ParseUser.CurrentUser["phone"].ToString(),
+                    YearOfManufacture = this.YearOfManufacture,
+                    CityLocation = this.CityLocation,
+                    Price = this.Price,
+                    ImageUrl = this.ImageUrl
+                };
+            }
+        }
+
+        public static Expression<Func<CarSQLiteModel, CarViewModel>> FromSQLiteModel
+        {
+            get
+            {
+                return model => new CarViewModel()
+                {
+                    ObjectId = model.ParseObjectId,
+                    Vendor = model.Vendor,
+                    Model = model.Model,
+                    Description = model.Description,
+                    OwnerUsername = model.OwnerUsername,
+                    OwnerPhone = model.OwnerPhone,
+                    YearOfManufacture = model.YearOfManufacture,
+                    CityLocation = model.CityLocation,
+                    Price = model.Price,
+                    ImageUrl = model.ImageUrl,
+                    FullName = model.Vendor + " " + model.Model,
+                    Bitmap = new BitmapImage(new Uri(model.ImageUrl, UriKind.Absolute))
+                };
+            }
+        }
+
+        public CarSQLiteModel ToSQLiteModel
+        {
+            get
+            {
+                return new CarSQLiteModel()
+                {
+                    ParseObjectId = this.ObjectId,
                     Vendor = this.Vendor,
                     Model = this.Model,
                     Description = this.Description,
@@ -75,6 +121,19 @@
             {
                 this.bitmap = value;
                 this.RaisePropertyChanged(() => this.Bitmap);
+            }
+        }
+
+        public string ObjectId
+        {
+            get
+            {
+                return this.objectId;
+            }
+            set
+            {
+                this.objectId = value;
+                this.RaisePropertyChanged(() => this.ObjectId);
             }
         }
 

@@ -2,13 +2,19 @@
 namespace MyCars.Pages.Main
 {
     using MyCars.Common;
+    using MyCars.InternetAccess;
     using MyCars.Pages.AddingCar;
     using MyCars.Pages.CarDetails;
+    using MyCars.Pages.Favourites;
     using MyCars.Pages.Login;
     using MyCars.Pages.Search;
+    using MyCars.SQLiteHelper;
     using System;
+    using Windows.Devices.Sensors;
+    using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
     using Windows.UI.Xaml.Navigation;
 
     /// <summary>
@@ -31,6 +37,8 @@ namespace MyCars.Pages.Main
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+
+            new SQLiteManager();
 
             this.ViewModel = viewModel;
         }
@@ -110,6 +118,8 @@ namespace MyCars.Pages.Main
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            this.CheckConnection();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -124,9 +134,25 @@ namespace MyCars.Pages.Main
             this.Frame.Navigate(typeof(LoginPage));
         }
 
-        private void OnCarsListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CheckConnection()
+        {
+            if (!Connection.IsConnectedToInternet())
+            {
+                MessageDialog msgbox = new MessageDialog("No internet access!");
+
+                await msgbox.ShowAsync();
+            }
+        }
+
+        private void OnCarsListItemDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             var eventsListView = (sender as ListView);
+
+            if (eventsListView == null)
+            {
+                return;
+            }
+
             var selectedObject = eventsListView.SelectedItem;
             this.Frame.Navigate(typeof(CarDetailsPage), selectedObject);
         }
@@ -139,6 +165,11 @@ namespace MyCars.Pages.Main
         private void OnSearchPageAppBarButtonClick(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SearchPage));
+        }
+
+        private void OnFavouritesPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavouritesPage));
         }
     }
 }

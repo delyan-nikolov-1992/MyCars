@@ -41,7 +41,7 @@
             <ListView ItemsSource="{Binding Cars}"
                       ItemTemplate="{StaticResource CarTemplate}"
                       SelectionMode="Single"
-                      SelectionChanged="OnCarsListViewSelectionChanged" />
+                      DoubleTapped="OnCarsListItemDoubleTapped" />
         </Grid>
         
         <StackPanel Orientation="Horizontal"
@@ -50,6 +50,7 @@
             <AppBarButton Label="Cars" Icon="List" />
             <AppBarButton Label="Search" Icon="Find" Click="OnSearchPageAppBarButtonClick" />
             <AppBarButton Label="Add" Icon="Add" Click="OnAddingCarPageAppBarButtonClick" />
+            <AppBarButton Label="Favourites" Icon="Favorite" Click="OnFavouritesPageAppBarButtonClick" />
         </StackPanel>
     </Grid>
 </Page>

@@ -3,9 +3,10 @@ namespace MyCars.Pages.Search
 {
     using MyCars.Common;
     using MyCars.Pages.AddingCar;
+    using MyCars.Pages.Favourites;
     using MyCars.Pages.Login;
     using MyCars.Pages.Main;
-    using MyCars.SearchResult;
+    using MyCars.Pages.SearchResult;
     using System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -132,6 +133,11 @@ namespace MyCars.Pages.Search
         private void OnAddingCarPageAppBarButtonClick(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(AddingCarPage));
+        }
+
+        private void OnFavouritesPageAppBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavouritesPage));
         }
 
         private async void OnSearchButtonClick(object sender, RoutedEventArgs e)
